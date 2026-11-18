@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="min-h-screen bg-charcoal-950 text-cream">
-  <header class="border-b border-white/10 bg-charcoal-900/80 backdrop-blur-sm">
+  <header class="border-b border-gold/20 bg-charcoal-900/80 backdrop-blur-sm">
     <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
       <div>
         <div class="mb-2 flex items-center gap-2">
@@ -13,7 +13,7 @@
         </div>
         <h1 class="mt-2 font-display text-3xl">Admin Dashboard</h1>
       </div>
-      <a href="{{ url_for('pages.home') }}" class="rounded-btn border border-white/10 px-4 py-2 text-sm text-cream hover:border-gold-bright hover:text-gold-bright">
+      <a href="{{ url_for('pages.home') }}" class="rounded-btn border border-gold/20 px-4 py-2 text-sm text-cream hover:border-gold-bright hover:text-gold-bright">
         View site
       </a>
     </div>
@@ -21,47 +21,47 @@
 
   <main class="mx-auto max-w-7xl px-6 py-10">
     <section class="grid gap-5 md:grid-cols-4">
-      <div class="rounded-card border border-white/10 bg-charcoal-900 p-5">
+      <div class="rounded-card border border-gold/20 bg-charcoal-900 p-5">
         <p class="text-sm text-cream-muted">Appointments</p>
         <p class="mt-4 text-3xl font-bold text-gold-bright">128</p>
       </div>
-      <div class="rounded-card border border-white/10 bg-charcoal-900 p-5">
+      <div class="rounded-card border border-gold/20 bg-charcoal-900 p-5">
         <p class="text-sm text-cream-muted">Revenue</p>
         <p class="mt-4 text-3xl font-bold text-success">₱8.4K</p>
       </div>
-      <div class="rounded-card border border-white/10 bg-charcoal-900 p-5">
+      <div class="rounded-card border border-gold/20 bg-charcoal-900 p-5">
         <p class="text-sm text-cream-muted">New Reviews</p>
         <p class="mt-4 text-3xl font-bold text-pending">34</p>
       </div>
-      <div class="rounded-card border border-white/10 bg-charcoal-900 p-5">
+      <div class="rounded-card border border-gold/20 bg-charcoal-900 p-5">
         <p class="text-sm text-cream-muted">Staff</p>
         <p class="mt-4 text-3xl font-bold text-cream">8</p>
       </div>
     </section>
 
     <section class="mt-8 grid gap-6 lg:grid-cols-[1.4fr_0.9fr]">
-      <div class="rounded-card border border-white/10 bg-charcoal-900 p-6">
+      <div class="rounded-card border border-gold/20 bg-charcoal-900 p-6">
         <div class="mb-5 flex items-center justify-between">
           <h2 class="font-display text-2xl">Upcoming bookings</h2>
           <span class="rounded-full border border-gold-bright/30 bg-gold-bright/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-gold-bright">Today</span>
         </div>
 
         <div class="space-y-4">
-          <div class="flex items-center justify-between rounded-lg border border-white/10 bg-charcoal-800 p-4">
+          <div class="flex items-center justify-between rounded-lg border border-gold/20 bg-charcoal-800 p-4">
             <div>
               <p class="font-semibold text-cream">Jordan Miles</p>
               <p class="text-sm text-cream-muted">Classic Cut • 10:30 AM</p>
             </div>
             <span class="rounded-full bg-success/20 px-2.5 py-1 text-xs font-medium text-success">Confirmed</span>
           </div>
-          <div class="flex items-center justify-between rounded-lg border border-white/10 bg-charcoal-800 p-4">
+          <div class="flex items-center justify-between rounded-lg border border-gold/20 bg-charcoal-800 p-4">
             <div>
               <p class="font-semibold text-cream">Alex Park</p>
               <p class="text-sm text-cream-muted">Fade & Style • 1:00 PM</p>
             </div>
             <span class="rounded-full bg-pending/20 px-2.5 py-1 text-xs font-medium text-pending">Pending</span>
           </div>
-          <div class="flex items-center justify-between rounded-lg border border-white/10 bg-charcoal-800 p-4">
+          <div class="flex items-center justify-between rounded-lg border border-gold/20 bg-charcoal-800 p-4">
             <div>
               <p class="font-semibold text-cream">Noah Hart</p>
               <p class="text-sm text-cream-muted">Beard Trim • 3:15 PM</p>
@@ -71,12 +71,12 @@
         </div>
       </div>
 
-      <div class="rounded-card border border-white/10 bg-charcoal-900 p-6">
+      <div class="rounded-card border border-gold/20 bg-charcoal-900 p-6">
         <h2 class="font-display text-2xl">Quick actions</h2>
         <div class="mt-5 space-y-3">
-          <a href="{{ url_for('pages.home') }}" class="block rounded-lg border border-white/10 bg-charcoal-800 px-4 py-3 text-cream hover:border-gold-bright hover:text-gold-bright">Open storefront</a>
-          <a href="{{ url_for('pages.login') }}" class="block rounded-lg border border-white/10 bg-charcoal-800 px-4 py-3 text-cream hover:border-gold-bright hover:text-gold-bright">Admin login</a>
-          <a href="{{ url_for('api.services') }}" class="block rounded-lg border border-white/10 bg-charcoal-800 px-4 py-3 text-cream hover:border-gold-bright hover:text-gold-bright">Services API</a>
+          <a href="{{ url_for('pages.home') }}" class="block rounded-lg border border-gold/20 bg-charcoal-800 px-4 py-3 text-cream hover:border-gold-bright hover:text-gold-bright">Open storefront</a>
+          <a href="{{ url_for('pages.login') }}" class="block rounded-lg border border-gold/20 bg-charcoal-800 px-4 py-3 text-cream hover:border-gold-bright hover:text-gold-bright">Admin login</a>
+          <a href="{{ url_for('api.services') }}" class="block rounded-lg border border-gold/20 bg-charcoal-800 px-4 py-3 text-cream hover:border-gold-bright hover:text-gold-bright">Services API</a>
         </div>
       </div>
     </section>

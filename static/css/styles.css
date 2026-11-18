@@ -7,7 +7,7 @@
   html { scroll-padding-top: env(safe-area-inset-top, 0px); }
   body {
     background: #0E1117;
-    color: #EAE6DF;
+    color: #E6CD91;
     font-family: 'Manrope', sans-serif;
     -webkit-font-smoothing: antialiased;
   }
@@ -35,7 +35,7 @@
   input, select, textarea {
     background: #211E16;
     border: 1px solid #51452E;
-    color: #EAE6DF;
+    color: #E6CD91;
   }
   input::placeholder, textarea::placeholder { color: #9B8048; }
   input:focus, select:focus, textarea:focus {
