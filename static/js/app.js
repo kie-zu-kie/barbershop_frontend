@@ -61,10 +61,16 @@ const DEFAULT_BARBERS = [
 ];
 const bootstrapElement = document.getElementById('cj-bootstrap');
 const bootstrapData = bootstrapElement ? JSON.parse(bootstrapElement.textContent) : {};
+const API_BASE_URL = (window.API_BASE_URL || '').replace(/\/+$/, '');
+const API_CREDENTIALS = API_BASE_URL
+  && new URL(API_BASE_URL, window.location.href).origin !== window.location.origin
+  ? 'include'
+  : 'same-origin';
 async function apiRequest(path, options = {}) {
   const isFormData = options.body instanceof FormData;
-  const response = await fetch(`/api${path}`, {
-    credentials: 'same-origin',
+  const apiUrl = API_BASE_URL ? `${API_BASE_URL}${path}` : `/api${path}`;
+  const response = await fetch(apiUrl, {
+    credentials: API_CREDENTIALS,
     ...options,
     headers: {
       ...(options.body && !isFormData ? { 'Content-Type': 'application/json' } : {}),
