@@ -61,7 +61,9 @@ const DEFAULT_BARBERS = [
 ];
 const bootstrapElement = document.getElementById('cj-bootstrap');
 const bootstrapData = bootstrapElement ? JSON.parse(bootstrapElement.textContent) : {};
-const API_BASE_URL = (window.API_BASE_URL || '').replace(/\/+$/, '');
+const apiConfigElement = document.getElementById('cj-api-config');
+const apiConfig = apiConfigElement ? JSON.parse(apiConfigElement.textContent) : {};
+const API_BASE_URL = (apiConfig.apiBaseUrl || '').replace(/\/+$/, '');
 const API_CREDENTIALS = API_BASE_URL
   && new URL(API_BASE_URL, window.location.href).origin !== window.location.origin
   ? 'include'

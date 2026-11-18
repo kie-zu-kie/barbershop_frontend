@@ -13,6 +13,6 @@
 
 {% block scripts %}
 <script id="cj-bootstrap" type="application/json">{{ bootstrap|tojson }}</script>
-<script>window.API_BASE_URL = {{ config.get("API_BASE_URL", "")|tojson }};</script>
+<script id="cj-api-config" type="application/json">{{ {"apiBaseUrl": config.get("API_BASE_URL", "")}|tojson }}</script>
 <script type="text/babel" data-presets="react" src="{{ url_for('static', filename='js/app.js') }}"></script>
 {% endblock %}

@@ -49,7 +49,7 @@ def test_frontend_uses_configured_api_and_serves_assets(client):
     page = client.get("/")
     script = client.get("/static/js/app.js")
 
-    assert b'window.API_BASE_URL = "https://barbershop-backend-nqkt.onrender.com/api"' in page.data
+    assert b'"apiBaseUrl": "https://barbershop-backend-nqkt.onrender.com/api"' in page.data
     assert script.status_code == 200
     assert b"const apiUrl = API_BASE_URL ? `${API_BASE_URL}${path}` : `/api${path}`;" in script.data
     assert b"credentials: API_CREDENTIALS" in script.data
