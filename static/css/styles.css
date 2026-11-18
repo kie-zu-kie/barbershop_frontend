@@ -12,10 +12,10 @@
     -webkit-font-smoothing: antialiased;
   }
   ::selection { background: #B59A66; color: #0E1117; }
-  * { scrollbar-width: thin; scrollbar-color: #46515C #151A22; }
+  * { scrollbar-width: thin; scrollbar-color: #6B5830 #171510; }
   ::-webkit-scrollbar { width: 8px; height: 8px; }
-  ::-webkit-scrollbar-track { background: #151A22; }
-  ::-webkit-scrollbar-thumb { background: #46515C; border-radius: 8px; }
+  ::-webkit-scrollbar-track { background: #171510; }
+  ::-webkit-scrollbar-thumb { background: #6B5830; border-radius: 8px; }
 
   .font-display { font-family: 'Fraunces', serif; }
 
@@ -33,11 +33,11 @@
   }
   button, a, input, select, textarea { font-family: inherit; }
   input, select, textarea {
-    background: #1C232D;
-    border: 1px solid #39434E;
+    background: #211E16;
+    border: 1px solid #51452E;
     color: #EAE6DF;
   }
-  input::placeholder, textarea::placeholder { color: #827B72; }
+  input::placeholder, textarea::placeholder { color: #9B8048; }
   input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: #B59A66;
@@ -46,8 +46,8 @@
   .barber-filter-input,
   .barber-filter-select {
     min-height: 48px;
-    background: linear-gradient(135deg, #1C232D, #171D26);
-    border-color: #39434E;
+    background: linear-gradient(135deg, #211E16, #1B1912);
+    border-color: #51452E;
     border-radius: 10px;
     transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
   }
@@ -61,7 +61,7 @@
     box-shadow: 0 0 0 3px rgba(181,154,102,0.2);
   }
   .barber-filter-input::placeholder {
-    color: #A9A39A;
+    color: #C4A967;
   }
 
   @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(6px);} to { opacity: 1; transform: translateY(0);} }
@@ -72,7 +72,7 @@
 
   @keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
   .skeleton {
-    background: linear-gradient(90deg, #1C232D 25%, #28313C 37%, #1C232D 63%);
+    background: linear-gradient(90deg, #211E16 25%, #302818 37%, #211E16 63%);
     background-size: 400px 100%;
     animation: shimmer 1.4s ease-in-out infinite;
   }
