@@ -1,0 +1,5 @@
+.env
+app.py
+tests
+templates
+instance

@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "https://barbershop-backend-nqkt.onrender.com/api/:path*" },
+    { "source": "/uploads/:path*", "destination": "https://barbershop-backend-nqkt.onrender.com/uploads/:path*" }
+  ]
+}

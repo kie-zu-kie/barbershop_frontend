@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Fade &amp; Steel — Barbershop</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Tailwind config copied from your earlier version. If your templates/base.html has a different
+     tailwind.config, paste that one here instead. -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          charcoal: { 950: '#0D1117', 900: '#141A22', 800: '#1C242E', 700: '#2B3540', 600: '#3D4952' },
+          cream: { DEFAULT: '#E6E8EA', muted: '#94A0AA', dim: '#6E7B85' },
+          gold: { DEFAULT: '#7D93A5', bright: '#A6BCCB', dim: '#566B7C' },
+          success: '#5F9C82',
+          pending: '#B08D57',
+          danger: '#B2504E',
+          neutralstatus: '#838C94',
+        },
+        fontFamily: {
+          display: ['Fraunces', 'serif'],
+          body: ['Manrope', 'sans-serif'],
+        },
+        borderRadius: { card: '14px', btn: '8px' },
+      }
+    }
+  }
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+
+<link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body style="background:#0D1117;color:#E6E8EA;font-family:'Manrope',sans-serif;">
+<div id="root">
+  <p id="boot-message" style="padding:3rem 1.5rem;text-align:center;color:#94A0AA;">
+    Loading Fade &amp; Steel… the server may take up to a minute to wake up.
+  </p>
+</div>
+
+<script>
+(async function () {
+  const message = document.getElementById('boot-message');
+
+  // Retry a few times because the free Render server sleeps when idle.
+  async function getJson(url, attempts) {
+    let lastError;
+    for (let i = 0; i < attempts; i++) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        return await response.json();
+      } catch (error) {
+        lastError = error;
+        await new Promise(function (resolve) { setTimeout(resolve, 3000); });
+      }
+    }
+    throw lastError;
+  }
+
+  try {
+    // app.js reads #cj-bootstrap for the services and barbers lists.
+    const results = await Promise.all([getJson('/api/services', 4), getJson('/api/barbers', 4)]);
+    const data = document.createElement('script');
+    data.type = 'application/json';
+    data.id = 'cj-bootstrap';
+    data.textContent = JSON.stringify({ services: results[0], barbers: results[1], appointments: [] });
+    document.body.appendChild(data);
+  } catch (error) {
+    message.textContent = 'Could not reach the server. Please refresh in a moment.';
+    return;
+  }
+
+  // app.js uses JSX with no build step, so compile it in the browser and run it.
+  const source = await (await fetch('/static/js/app.js')).text();
+  const compiled = Babel.transform(source, { presets: ['react'] }).code;
+  const script = document.createElement('script');
+  script.textContent = compiled;
+  document.body.appendChild(script);
+})();
+</script>
+</body>
+</html>
