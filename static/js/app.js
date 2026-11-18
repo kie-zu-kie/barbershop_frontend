@@ -42,14 +42,29 @@ const icons = {
 };
 const Ic = (name, props={}) => <Icon path={icons[name]} {...props} />;
 
-const API_BASE_URL = (window.CJ_CONFIG && window.CJ_CONFIG.apiBaseUrl || '').replace(/\/+$/, '');
-let SERVICES = [];
-let BARBERS = [];
+/* ============================== MOCK DATA ============================== */
+const DEFAULT_SERVICES = [
+  { id: 's1', name: 'Low Fade', duration: 30, price: 28, description: 'Precision scissor or clipper cut, tailored to your style and finished with a hot-towel neck shave.' },
+  { id: 's2', name: 'Low Taper Fade', duration: 40, price: 35, description: 'Sharp, seamless fade blended by hand — from bald skin fade to a soft taper.' },
+  { id: 's3', name: 'High Fade', duration: 20, price: 18, description: 'Shape and tighten your beard line with straight-razor detailing.' },
+  { id: 's4', name: 'High Taper Fade', duration: 45, price: 38, description: 'A traditional straight-razor shave with hot towels and pre-shave oil.' },
+  { id: 's5', name: 'Mid Fade', duration: 55, price: 48, description: 'Full haircut paired with a beard trim and line-up — our most popular package.' },
+  { id: 's6', name: 'Edgar Cut', duration: 35, price: 32, description: 'Deep-cleansing scalp massage and conditioning treatment.' },
+  { id: 's7', name: "Mullet Cut", duration: 25, price: 20, description: 'A relaxed, patient cut for younger guests, ages 12 and under.' },
+];
 
+const DEFAULT_BARBERS = [
+  { id: 'b1', name: 'Carl Joseph', initials: 'MR', specialty: 'Skin Fades & Tapers', rating: 4.9, reviews: 182, years: 9, bio: 'Marcus built his reputation on razor-sharp fades and a steady hand. Nine years behind the chair, and he still sketches every hairline before he cuts it.', color: 'bg-gold/90', services: ['s1','s2','s3','s5','s6'] },
+  { id: 'b2', name: 'Jayson Samante', initials: 'DS', specialty: 'Classic Cuts & Hot Towel Shaves', rating: 4.8, reviews: 141, years: 12, bio: 'A student of old-school barbering, Diego learned the straight razor from his father. Come for the shave, stay for the stories.', color: 'bg-danger/80', services: ['s1','s3','s4','s5','s7'] },
+  { id: 'b3', name: 'Zenon Suhayon', initials: 'IC', specialty: 'Modern Styles & Texture Cuts', rating: 5.0, reviews: 97, years: 6, bio: 'Ines trained in London before joining Fade & Steel. She specialises in textured crops and modern silhouettes with clean, wearable lines.', color: 'bg-success/80', services: ['s1','s2','s5','s6','s7'] },
+  { id: 'b4', name: 'Mark Johnson', initials: 'OC', specialty: 'Beard Sculpting', rating: 4.7, reviews: 76, years: 8, bio: 'If it grows on your face, Owen has an opinion about it. Precision beard work with an eye for proportion and face shape.', color: 'bg-pending/80', services: ['s2','s3','s4','s5'] },
+];
+const bootstrapElement = document.getElementById('cj-bootstrap');
+const bootstrapData = bootstrapElement ? JSON.parse(bootstrapElement.textContent) : {};
 async function apiRequest(path, options = {}) {
   const isFormData = options.body instanceof FormData;
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    credentials: 'include',
+  const response = await fetch(`/api${path}`, {
+    credentials: 'same-origin',
     ...options,
     headers: {
       ...(options.body && !isFormData ? { 'Content-Type': 'application/json' } : {}),
@@ -64,6 +79,12 @@ async function apiRequest(path, options = {}) {
   }
   return payload;
 }
+const SERVICES = Array.isArray(bootstrapData.services)
+  ? bootstrapData.services
+  : DEFAULT_SERVICES;
+const BARBERS = Array.isArray(bootstrapData.barbers)
+  ? bootstrapData.barbers
+  : DEFAULT_BARBERS;
 
 const WORKING_HOURS = {
   Mon: { off: false, start: '09:00', end: '19:00' },
@@ -100,7 +121,9 @@ const formatPrice = price => new Intl.NumberFormat('en-PH', {
   currency: 'PHP',
 }).format(Number(price));
 
-const INITIAL_APPOINTMENTS = [];
+const INITIAL_APPOINTMENTS = Array.isArray(bootstrapData.appointments)
+  ? bootstrapData.appointments
+  : [];
 
 /* ============================== APP CONTEXT ============================== */
 const AppContext = createContext(null);
@@ -622,6 +645,7 @@ function DashboardShell({ role, active, onNav, onLogout, title, subtitle, childr
   const customerNav = [
     { id: 'dashboard', label: 'Dashboard', icon: 'home' },
     { id: 'browse', label: 'Browse barbers', icon: 'search' },
+    { id: 'haircuts', label: 'Haircuts', icon: 'scissors' },
     { id: 'appointments', label: 'Appointments', icon: 'calendar' },
     { id: 'profile', label: 'Profile', icon: 'user' },
   ];
@@ -845,6 +869,65 @@ function BrowseBarbers({ onSelectBarber, loading }) {
                 </div>
               </div>
             </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CustomerHaircutGallery({ onBookHaircut }) {
+  const [haircuts, setHaircuts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    let active = true;
+    apiRequest('/haircuts')
+      .then(result => {
+        if (active) setHaircuts(result);
+      })
+      .catch(requestError => {
+        if (active) setError(requestError.message);
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => { active = false; };
+  }, []);
+
+  return (
+    <div className="space-y-6 animate-in">
+      <div>
+        <h2 className="font-display text-2xl text-cream mb-1">Haircuts</h2>
+        <p className="text-cream-muted text-sm">Browse cuts shared by our barbers. Select a photo to book.</p>
+      </div>
+      {error ? (
+        <p className="text-sm text-danger" role="alert">{error}</p>
+      ) : loading ? (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[1, 2, 3].map(index => <Skeleton key={index} className="h-64" />)}
+        </div>
+      ) : haircuts.length === 0 ? (
+        <EmptyState icon="scissors" title="No haircuts yet" body="Our barbers’ haircut photos will appear here." />
+      ) : (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {haircuts.map(haircut => (
+            <button
+              key={haircut.id}
+              type="button"
+              onClick={onBookHaircut}
+              aria-label={`Book an appointment for ${haircut.title}`}
+              className="overflow-hidden rounded-card border border-charcoal-700/70 bg-charcoal-900 text-left hover:border-gold/60 transition-colors focus-ring"
+            >
+              <img src={haircut.imageUrl} alt={haircut.title} className="w-full aspect-[4/3] object-cover" loading="lazy" />
+              <div className="p-4">
+                <h3 className="font-display text-lg text-cream">{haircut.title}</h3>
+                <p className="text-xs text-gold-bright mt-1">by {haircut.barberName}</p>
+                {haircut.description && <p className="text-sm text-cream-muted mt-2 line-clamp-2">{haircut.description}</p>}
+                <p className="text-xs text-gold mt-3">Book this haircut</p>
+              </div>
+            </button>
           ))}
         </div>
       )}
@@ -1213,7 +1296,7 @@ function BarberHaircuts() {
 
 /* ============================== CUSTOMER: BOOKING FLOW ============================== */
 function BookingFlow({ initialBarberId, initialSelection, onComplete, onCancel }) {
-  const [step, setStep] = useState(initialSelection ? 4 : 1);
+  const [step, setStep] = useState(initialSelection?.date && initialSelection?.time ? 4 : 1);
   const [barberId, setBarberId] = useState(initialBarberId || '');
   const [serviceId, setServiceId] = useState(initialSelection?.serviceId || '');
   const [services, setServices] = useState([]);
@@ -2246,6 +2329,7 @@ function AppRoot() {
   const [selectedAppt, setSelectedAppt] = useState(null);
   const [bookingBarber, setBookingBarber] = useState(null);
   const [bookingSelection, setBookingSelection] = useState(null);
+  const [bookingReturnView, setBookingReturnView] = useState('browse');
   const [loading, setLoading] = useState(true);
   const [appointments, setAppointments] = useState(INITIAL_APPOINTMENTS);
   const toast = useToast();
@@ -2359,12 +2443,20 @@ function AppRoot() {
     } else if (customerView === 'browse') {
       title = 'Browse barbers';
       content = <BrowseBarbers loading={loading} onSelectBarber={(id) => { setSelectedBarber(id); setCustomerView('barber-profile'); }} />;
+    } else if (customerView === 'haircuts') {
+      title = 'Haircuts';
+      content = <CustomerHaircutGallery onBookHaircut={() => {
+        setBookingBarber(null);
+        setBookingSelection(null);
+        setBookingReturnView('haircuts');
+        setCustomerView('booking');
+      }} />;
     } else if (customerView === 'barber-profile') {
       title = 'Barber profile';
-      content = <BarberProfileScreen barberId={selectedBarber} onBack={() => setCustomerView('browse')} onBook={(id, selection = null) => { setBookingBarber(id); setBookingSelection(selection); setCustomerView('booking'); }} />;
+      content = <BarberProfileScreen barberId={selectedBarber} onBack={() => setCustomerView('browse')} onBook={(id, selection = null) => { setBookingBarber(id); setBookingSelection(selection); setBookingReturnView('browse'); setCustomerView('booking'); }} />;
     } else if (customerView === 'booking') {
       title = 'Book an appointment';
-      content = <BookingFlow initialBarberId={bookingBarber} initialSelection={bookingSelection} onCancel={() => setCustomerView('browse')}
+      content = <BookingFlow initialBarberId={bookingBarber} initialSelection={bookingSelection} onCancel={() => setCustomerView(bookingReturnView)}
         onComplete={(appointment) => {
           addAppointment(appointment);
           setSelectedAppt(appointment.id);
@@ -2436,19 +2528,4 @@ function Root() {
   );
 }
 
-async function startApp() {
-  const root = document.getElementById('root');
-  try {
-    const [services, barbers] = await Promise.all([
-      apiRequest('/services'),
-      apiRequest('/barbers'),
-    ]);
-    SERVICES = services;
-    BARBERS = barbers;
-    ReactDOM.createRoot(root).render(<Root />);
-  } catch (error) {
-    root.textContent = `Unable to connect to the barbershop service: ${error.message}`;
-  }
-}
-
-startApp();
+ReactDOM.createRoot(document.getElementById('root')).render(<Root />);

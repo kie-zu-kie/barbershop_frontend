@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Fade &amp; Steel — Barbershop{% endblock %}
+
+{% block content %}
+<div id="root"></div>
+{% endblock %}
+
+{% block scripts %}
+<script id="cj-bootstrap" type="application/json">{{ bootstrap|tojson }}</script>
+<script type="text/babel" data-presets="react" src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}

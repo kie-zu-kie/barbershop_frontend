@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Server error | Fade &amp; Steel</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="min-h-screen flex items-center justify-center p-6">
+  <main class="text-center">
+    <p class="font-display text-5xl text-danger mb-3">500</p>
+    <h1 class="font-display text-2xl text-cream mb-3">The server couldn't complete that request.</h1>
+    <a class="text-gold-bright underline" href="{{ url_for('pages.home') }}">Try again</a>
+  </main>
+</body>
+</html>

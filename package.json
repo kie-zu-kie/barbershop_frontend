@@ -1,7 +1,0 @@
-{
-  "name": "fade-and-steel-frontend",
-  "private": true,
-  "scripts": {
-    "build": "node build.js"
-  }
-}
